@@ -9,7 +9,7 @@ import locale
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("TV")
+        self.setWindowTitle("T")
         self.layout = QVBoxLayout()
         self.channels = {
             "BNT 1": "watch_bnt1", 
@@ -41,6 +41,7 @@ class MainWindow(QWidget):
         self.stop_btn.clicked.connect(self.stop_playing)
         self.stop_btn.setEnabled(False)
         self.layout.addWidget(self.stop_btn)
+        
 
         self.setLayout(self.layout)
 
