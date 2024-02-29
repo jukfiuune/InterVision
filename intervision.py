@@ -9,14 +9,14 @@ import locale
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("T")
+        self.setWindowTitle("TV")
         self.layout = QVBoxLayout()
         self.channels = {
-            "BNT 1": "watch_bnt1", 
+            "BNT 1": "watch_bnt1",
             "BNT 2": "watch_bnt2",
             "BNT 3": "watch_bnt3",
             "BNT 4": "watch_bnt4",
-            "bTV": "watch_btv", 
+            "bTV": "watch_btv",
             "Nova": "watch_nova",
             "Korea Central TV": "watch_nkctv",
             "WCBS": "watch_wcbs",
@@ -41,7 +41,6 @@ class MainWindow(QWidget):
         self.stop_btn.clicked.connect(self.stop_playing)
         self.stop_btn.setEnabled(False)
         self.layout.addWidget(self.stop_btn)
-        
 
         self.setLayout(self.layout)
 
@@ -87,7 +86,7 @@ class MainWindow(QWidget):
         media_url = "http:" + source_tag['src']
         wheaders="Referer: http://i.cdn.bg, Origin: http://i.cdn.bg"
         self.play_with_mpv(media_url,wheaders)
-    
+
     def watch_bnt2(self):
         url = "http://i.cdn.bg/live/ZBPbdxDHm7"
         response = requests.get(url, headers={"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8", "Accept-Language": "en-US,en;q=0.5", "Accept-Encoding": "gzip, deflate", "Connection": "keep-alive", "Referer": "http://tv.bnt.bg/", "Upgrade-Insecure-Requests": "1"})
@@ -96,7 +95,7 @@ class MainWindow(QWidget):
         media_url = "http:" + source_tag['src']
         wheaders="Referer: http://i.cdn.bg, Origin: http://i.cdn.bg"
         self.play_with_mpv(media_url,wheaders)
-    
+
     def watch_bnt3(self):
         url = "http://i.cdn.bg/live/OQ70Ds9Lcp"
         response = requests.get(url, headers={"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8", "Accept-Language": "en-US,en;q=0.5", "Accept-Encoding": "gzip, deflate", "Connection": "keep-alive", "Referer": "http://tv.bnt.bg/", "Upgrade-Insecure-Requests": "1"})
@@ -105,7 +104,7 @@ class MainWindow(QWidget):
         media_url = "http:" + source_tag['src']
         wheaders="Referer: http://i.cdn.bg, Origin: http://i.cdn.bg"
         self.play_with_mpv(media_url,wheaders)
-        
+
     def watch_bnt4(self):
         url = "http://i.cdn.bg/live/ls4wHAbTmY"
         response = requests.get(url, headers={"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8", "Accept-Language": "en-US,en;q=0.5", "Accept-Encoding": "gzip, deflate", "Connection": "keep-alive", "Referer": "http://tv.bnt.bg/", "Upgrade-Insecure-Requests": "1"})
@@ -127,7 +126,7 @@ class MainWindow(QWidget):
     def watch_nkctv(self):
         wheaders="User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0"
         self.play_with_mpv("https://tv.nknews.org/tvdash/stream.mpd",wheaders)
-    
+
     def watch_wcbs(self):
         url = "https://www.cbsnews.com/live/"
         response = requests.get(url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0", "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8", "Accept-Language": "en-US,en;q=0.5", "Accept-Encoding": "gzip, deflate, br"})
