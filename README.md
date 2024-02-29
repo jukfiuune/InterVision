@@ -30,7 +30,7 @@ Some of these may be geolocked, keep that in mind!
 
 ## Installation
 
-Python 3 is mandatory!\
+Python 3 is mandatory!
 
 1. Install mpv and libmpv using your package manager.
 2. Install requests, beautifulsoup, python-mpv and PyQt5 using pip
