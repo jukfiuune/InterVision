@@ -3,15 +3,14 @@ import json
 import requests
 from bs4 import BeautifulSoup as bs
 import mpv
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QMessageBox, QComboBox
 import locale
 
-class MainWindow(QMainWindow, QWidget):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.setWindowTitle("InterVision")
-        self.layout = QHBoxLayout()
+class MainWindow(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("TV")
+        self.layout = QVBoxLayout()
         self.channels = {
             "BNT 1": "watch_bnt1",
             "BNT 2": "watch_bnt2",
@@ -23,69 +22,27 @@ class MainWindow(QMainWindow, QWidget):
             "WCBS": "watch_wcbs",
             "TRT 1": "watch_trt1"
         }
-        # Create a widget for the channel selection elements
-        channel_selection_widget = QWidget()
-        channel_layout = QVBoxLayout()
-        channel_selection_widget.setLayout(channel_layout)
+        self.current_channel = None
+        self.player = None
+        self.setup_ui()
+
+    def setup_ui(self):
+        # Add channel dropdown
         self.channel_dropdown = QComboBox(self)
         self.channel_dropdown.addItems(self.channels.keys())
-        channel_layout.addWidget(self.channel_dropdown)
+        self.layout.addWidget(self.channel_dropdown)
+
+        # Add play and stop buttons
         self.play_btn = QPushButton("Play", self)
         self.play_btn.clicked.connect(self.play_selected_channel)
-        channel_layout.addWidget(self.play_btn)
+        self.layout.addWidget(self.play_btn)
+
         self.stop_btn = QPushButton("Stop", self)
         self.stop_btn.clicked.connect(self.stop_playing)
         self.stop_btn.setEnabled(False)
-        channel_layout.addWidget(self.stop_btn)
-        self.layout.addWidget(channel_selection_widget)
-
-        self.container = QWidget(self)
-        self.setCentralWidget(self.container)
-        self.container.setAttribute(Qt.WA_DontCreateNativeAncestors)
-        self.container.setAttribute(Qt.WA_NativeWindow)
-        self.layout.addWidget(self.container)
+        self.layout.addWidget(self.stop_btn)
 
         self.setLayout(self.layout)
-        
-#class MainWindow(QMainWindow, QWidget):
-#    def __init__(self, parent=None):
-#        super().__init__(parent)
-#        self.setWindowTitle("InterVision")
-#        self.layout = QVBoxLayout()
-#        self.channels = {
-#            "BNT 1": "watch_bnt1",
-#            "BNT 2": "watch_bnt2",
-#            "BNT 3": "watch_bnt3",
-#            "BNT 4": "watch_bnt4",
-#            "bTV": "watch_btv",
-#            "Nova": "watch_nova",
-#            "Korea Central TV": "watch_nkctv",
-#            "WCBS": "watch_wcbs",
-#            "TRT 1": "watch_trt1"
-#        }
-#        self.current_channel = None
-#        self.player = None
-#        # Add channel dropdown
-#        self.channel_dropdown = QComboBox(self)
-#        self.channel_dropdown.addItems(self.channels.keys())
-#        self.layout.addWidget(self.channel_dropdown)
-
-        # Add play and stop buttons
-#        self.play_btn = QPushButton("Play", self)
-#        self.play_btn.clicked.connect(self.play_selected_channel)
-#        self.layout.addWidget(self.play_btn)
-
-#        self.stop_btn = QPushButton("Stop", self)
-#        self.stop_btn.clicked.connect(self.stop_playing)
-#        self.stop_btn.setEnabled(False)
-#        self.layout.addWidget(self.stop_btn)
-
-#        self.container = QWidget(self)
-#        self.setCentralWidget(self.container)
-#        self.container.setAttribute(Qt.WA_DontCreateNativeAncestors)
-#        self.container.setAttribute(Qt.WA_NativeWindow)
-
-#        self.setLayout(self.layout)
 
     def play_selected_channel(self):
         if self.player != None:
@@ -188,12 +145,10 @@ class MainWindow(QMainWindow, QWidget):
     def play_with_mpv(self, media_url, wheaders):
         try:
             locale.setlocale(locale.LC_NUMERIC,"C")
-            self.player = mpv.MPV(id=str(int(self.container.winId())),
-                vo='x11',
-                log_handler=print,
-                loglevel='debug',
-                http_header_fields=wheaders)
-            self.player.play(media_url)
+            player = mpv.MPV(http_header_fields=wheaders)
+            player.fullscreen = False
+            player.play(media_url)
+            self.player = player
         except Exception as e:
             self.show_error_message(str(e))
 
